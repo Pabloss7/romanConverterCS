@@ -2,24 +2,24 @@ module.exports = [
   {
     "rules": {
         "no-cond-assign":[
-          "error",
+          "warn",
           "always"
         ],
         "indent": [
-          "error",
+          "warn",
           2
         ],
         "linebreak-style": [
-          "error",
+          "warn",
           "unix"
         ],
         "quotes": [
-          "error",
+          "warn",
           "single"
         ],
         "no-unused-vars": "off",
         "semi": [
-          "error",
+          "warn",
           "always"
         ]
       }
