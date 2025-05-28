@@ -1,4 +1,4 @@
-moule.exports = [
+module.exports = [
   {
     "rules": {
         "no-cond-assign":[
