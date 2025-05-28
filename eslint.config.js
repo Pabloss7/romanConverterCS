@@ -15,7 +15,7 @@ moule.exports = [
         ],
         "quotes": [
           "error",
-          "single
+          "single"
         ],
         "no-unused-vars": "off",
         "semi": [
