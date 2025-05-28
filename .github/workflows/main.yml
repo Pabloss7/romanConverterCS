@@ -1,30 +1,26 @@
-name: Run Browser Tests
+name: Run Mocha Tests in Headless Browser
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser python3
+    - name: Install Chromium
+      run: sudo apt-get install -y chromium-browser
 
-      - name: Start local web server
-        run: |
-          python3 -m http.server 8000 &
-          sleep 3
+    - name: Run tests in headless browser
+      run: |
+        chromium-browser --headless --disable-gpu --no-sandbox --dump-dom test.html > test-output.html
 
-      - name: Run tests in Chromium
-        run: |
-          chromium-browser --headless --disable-gpu --no-sandbox --dump-dom http://localhost:8000/test.html > test-output.html
-
-      - name: Show test results
-        run: cat test-output.html
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: mocha-report
+        path: test-output.html
