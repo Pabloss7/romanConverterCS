@@ -12,14 +12,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Chromium
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y chromium-browser
+          sudo apt-get install -y chromium-browser python3
 
-      - name: Run Headless Browser Test
+      - name: Start local web server
         run: |
-          chromium-browser --headless --disable-gpu --no-sandbox --remote-debugging-port=9222 --dump-dom test.html > test-output.html
+          python3 -m http.server 8000 &
+          sleep 3
 
-      - name: Print test result
+      - name: Run tests in Chromium
+        run: |
+          chromium-browser --headless --disable-gpu --no-sandbox --dump-dom http://localhost:8000/test.html > test-output.html
+
+      - name: Show test results
         run: cat test-output.html
