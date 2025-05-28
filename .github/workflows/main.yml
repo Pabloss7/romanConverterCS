@@ -1,39 +1,31 @@
-name: CI
+name: Run Tests
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
-  # Runs on pull requests opened or reopened targeting the default branch
+    branches: [ main ]
   pull_request:
-    types: [opened, reopened]
-    branches: ["main"]
+    branches: [ main ]
 
-  jobs: 
-    # name of the pipeline job
-    test:
-      #where is executed (docker)
-      runs-on: ubuntu-latest
-      #steps of the job
-      steps:
-        - run: echo " job automatically triggered by a ${{ github.event_name}} event"
-        - run: echo "💻 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-        - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-        # This is a simple job that requires first of all checking out the code
-        - uses: actions/checkout@v3
-        - run: echo "📦 The ${{ github.repository }} repository has been cloned to the runner."
-        - run: echo "🧪 The workflow is now ready to test your code on the runner."
-        # We need node.js to execute our tests
-        - name: Set-up Node
-          uses: actions/setup-node@v1
-          with:
-            node-version: 20.x
-        # The required dependencies for node.js are declared in package.json and installed with the following command
-        - name: Install Dependencies
-          run: |
-            npm install
-        # The last step is executing the test cases
-        - name: Test
-          run: node_modules/.bin/mocha--headless-chrome -f test.html --args no-sandbox
-        # If any of the steps fail, the job will fail. If any test fails (red) the job will fail
-        - run: echo "🍏 This job's status is ${{ job.status }}."
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "💻 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - uses: actions/checkout@v3
+      - run: echo "📦 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🧪 The workflow is now ready to test your code on the runner."
+
+      - name: Set-up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20.x
+
+      - name: Install Dependencies
+        run: |
+          npm install
+
+      - name: Test
+        run: node_modules/.bin/mocha--headless-chrome -f test.html --args no-sandbox
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."
