@@ -22,8 +22,7 @@ jobs:
           node-version: 20.x
 
       - name: Install Dependencies
-        run: |
-          npm install
+        run: 
 
       - name: Test
         run: node_modules/.bin/mocha--headless-chrome -f test.html --args no-sandbox
