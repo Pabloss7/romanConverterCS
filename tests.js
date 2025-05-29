@@ -5,6 +5,7 @@
 const expect = chai.expect;
 
 // tests.js
+describe('integerToRoman', function(){
   it('should convert 1 to "I"', function() {
     expect(integerToRoman(1)).to.equal("I");
   });
