@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
 
   lint:
@@ -42,3 +47,36 @@ jobs:
       with:
         name: mocha-report
         path: test-output.html
+        
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - run: mkdir dist
+      - run: cp index.html dist/
+      - run: cp script.js dist/
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          put: 'dist'
+
+  deploy:
+      environment: 
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+      runs-on: ubuntu-latest
+      needs: build
+      steps:
+        - name: Setup Pages
+          uses: actions/configure-pages@v2
+        - name: deploy to github pages
+          id: deployment
+          uses: actions/deploy-pages@v4
+
+
+
+
+
+    
